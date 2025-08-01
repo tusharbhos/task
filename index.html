@@ -42,36 +42,6 @@
         overflow-x: hidden;
       }
 
-      .loader-wrapper {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(45deg, #667eea, #764ba2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        transition: opacity 0.5s ease-out;
-      }
-
-      .loader {
-        width: 80px;
-        height: 80px;
-        border: 4px solid rgba(255, 255, 255, 0.3);
-        border-top: 4px solid white;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-
-      .loader-text {
-        color: white;
-        font-size: 1.5rem;
-        margin-top: 20px;
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-
       @keyframes spin {
         0% {
           transform: rotate(0deg);
@@ -474,13 +444,6 @@
     </style>
   </head>
   <body>
-    <div class="loader-wrapper" id="loader">
-      <div class="text-center">
-        <div class="loader" style="margin-left: 100px"></div>
-        <div class="loader-text">Loading Amazing Content...</div>
-      </div>
-    </div>
-
     <nav class="navbar navbar-expand-lg fixed-top">
       <div class="container">
         <a class="navbar-brand" href="#">
@@ -703,8 +666,13 @@
           </div>
           <div class="modal-body">
             <iframe
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              width="100%"
+              height="400"
+              src="https://www.youtube.com/embed/bO5DloC3mpI?si=jxU7hKKc5oKgZT4m"
+              title="YouTube video player"
               frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen
             ></iframe>
             <h4>Featured YouTube Video</h4>
@@ -820,16 +788,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      window.addEventListener("load", function () {
-        setTimeout(function () {
-          const loader = document.getElementById("loader");
-          loader.style.opacity = "0";
-          setTimeout(function () {
-            loader.style.display = "none";
-          }, 500);
-        }, 2000);
-      });
-
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener("click", function (e) {
           e.preventDefault();
