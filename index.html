@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Website with Popups</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Custom CSS */
+      :root {
+        --primary-color: #4f46e5;
+        --secondary-color: #06b6d4;
+        --accent-color: #f59e0b;
+        --success-color: #10b981;
+        --danger-color: #ef4444;
+        --dark-color: #1f2937;
+        --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* Loader Styles */
+      .loader-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+
+      .loader {
+        width: 80px;
+        height: 80px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      .loader-text {
+        color: white;
+        font-size: 1.5rem;
+        margin-top: 20px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.7;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      /* Header Styles */
+      .navbar {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        padding: 1rem 0;
+      }
+
+      .navbar-brand img {
+        height: 40px;
+        transition: transform 0.3s ease;
+      }
+
+      .navbar-brand:hover img {
+        transform: scale(1.1);
+      }
+
+      .navbar-nav .nav-link {
+        color: var(--dark-color) !important;
+        font-weight: 500;
+        margin: 0 10px;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-nav .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 50%;
+        background: var(--primary-color);
+        transition: all 0.3s ease;
+      }
+
+      .navbar-nav .nav-link:hover::after {
+        width: 100%;
+        left: 0;
+      }
+
+      .navbar-nav .nav-link:hover {
+        color: var(--primary-color) !important;
+        transform: translateY(-2px);
+      }
+
+      .user-dropdown img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid var(--primary-color);
+        transition: all 0.3s ease;
+      }
+
+      .user-dropdown:hover img {
+        transform: scale(1.1);
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+      }
+
+      .dropdown-menu {
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        animation: fadeInDown 0.3s ease;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Hero Section */
+      .hero-section {
+        min-height: 80vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,800 1000,1000"/></svg>');
+        background-size: cover;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1.5rem;
+        animation: slideInLeft 1s ease-out;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+        animation: slideInRight 1s ease-out 0.3s both;
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Buttons Section */
+      .buttons-section {
+        padding: 80px 0;
+        background: linear-gradient(45deg, #f8fafc, #e2e8f0);
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 3rem;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--primary-color);
+        border-radius: 2px;
+      }
+
+      .popup-btn {
+        width: 200px;
+        height: 200px;
+        border: none;
+        border-radius: 20px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: white;
+        margin: 20px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .popup-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.6s;
+      }
+
+      .popup-btn:hover::before {
+        left: 100%;
+      }
+
+      .popup-btn:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-1 {
+        background: var(--gradient-1);
+      }
+      .btn-2 {
+        background: var(--gradient-2);
+      }
+      .btn-3 {
+        background: var(--gradient-3);
+      }
+      .btn-4 {
+        background: var(--gradient-4);
+      }
+      .btn-5 {
+        background: var(--gradient-5);
+      }
+
+      .popup-btn i {
+        display: block;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Modal Styles */
+      .modal-content {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 1.5rem;
+      }
+
+      .modal-title {
+        font-weight: 600;
+        font-size: 1.5rem;
+      }
+
+      .btn-close {
+        filter: invert(1);
+      }
+
+      .modal-body {
+        padding: 2rem;
+      }
+
+      .modal-body img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+      }
+
+      .modal-body video {
+        width: 100%;
+        height: 300px;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+      }
+
+      .modal-body iframe {
+        width: 100%;
+        height: 315px;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--dark-color);
+        color: white;
+        padding: 40px 0 20px;
+        margin-top: 80px;
+      }
+
+      .footer h5 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .footer a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer a:hover {
+        color: var(--primary-color);
+      }
+
+      .social-icons a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 50%;
+        margin: 5px;
+        transition: all 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        background: var(--secondary-color);
+        transform: translateY(-3px);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .popup-btn {
+          width: 150px;
+          height: 150px;
+          font-size: 1rem;
+        }
+
+        .popup-btn i {
+          font-size: 2rem;
+        }
+      }
+
+      /* Animation for buttons on load */
+      .popup-btn {
+        opacity: 0;
+        animation: slideInUp 0.8s ease forwards;
+      }
+
+      .popup-btn:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .popup-btn:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .popup-btn:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .popup-btn:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .popup-btn:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+      <div class="text-center">
+        <div class="loader" style="margin-left: 100px"></div>
+        <div class="loader-text">Loading Amazing Content...</div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img
+            src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40'><rect width='100' height='40' fill='%234f46e5' rx='5'/><text x='50' y='25' text-anchor='middle' fill='white' font-family='Arial' font-size='14' font-weight='bold'>LOGO</text></svg>"
+            alt="Logo"
+          />
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#service">Service</a>
+            </li>
+          </ul>
+
+          <div class="dropdown">
+            <a class="user-dropdown" href="#" data-bs-toggle="dropdown">
+              <img
+                src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%234f46e5'/><circle cx='50' cy='35' r='15' fill='white'/><path d='M20 80 Q20 65 35 65 h30 Q80 65 80 80' fill='white'/></svg>"
+                alt="User"
+              />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-user me-2"></i>John Doe</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-cog me-2"></i>Settings</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <div class="hero-content">
+              <h1 class="hero-title">Welcome to Our Amazing Website</h1>
+              <p class="hero-subtitle">
+                Discover incredible content through our interactive popup
+                experiences. Click the buttons below to explore videos, images,
+                and more!
+              </p>
+              <a
+                href="#buttons"
+                class="btn btn-light btn-lg px-5 py-3 rounded-pill"
+              >
+                <i class="fas fa-arrow-down me-2"></i>Explore Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons Section -->
+    <section class="buttons-section" id="buttons">
+      <div class="container">
+        <h2 class="section-title">Interactive Experiences</h2>
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <button
+              class="popup-btn btn-1"
+              data-bs-toggle="modal"
+              data-bs-target="#popup1"
+            >
+              <i class="fas fa-play-circle"></i>
+              Video Gallery
+            </button>
+          </div>
+          <div class="col-auto">
+            <button
+              class="popup-btn btn-2"
+              data-bs-toggle="modal"
+              data-bs-target="#popup2"
+            >
+              <i class="fas fa-images"></i>
+              Photo Collection
+            </button>
+          </div>
+          <div class="col-auto">
+            <button
+              class="popup-btn btn-3"
+              data-bs-toggle="modal"
+              data-bs-target="#popup3"
+            >
+              <i class="fab fa-youtube"></i>
+              YouTube Video
+            </button>
+          </div>
+          <div class="col-auto">
+            <button
+              class="popup-btn btn-4"
+              data-bs-toggle="modal"
+              data-bs-target="#popup4"
+            >
+              <i class="fas fa-camera"></i>
+              Image Showcase
+            </button>
+          </div>
+          <div class="col-auto">
+            <button
+              class="popup-btn btn-5"
+              data-bs-toggle="modal"
+              data-bs-target="#popup5"
+            >
+              <i class="fas fa-film"></i>
+              Local Video
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modals/Popups -->
+
+    <!-- Popup 1 - Video -->
+    <div class="modal fade" id="popup1" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-play-circle me-2"></i>Video Gallery
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <video controls class="w-100">
+              <source
+                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+            <h4>Amazing Video Content</h4>
+            <p>
+              This is a sample video demonstrating our video popup
+              functionality. The video player is fully responsive and includes
+              standard controls for the best user experience.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup 2 - Image -->
+    <div class="modal fade" id="popup2" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-images me-2"></i>Photo Collection
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <img
+              src="https://picsum.photos/600/300?random=1"
+              alt="Beautiful Landscape"
+              class="w-100"
+            />
+            <h4>Stunning Photography</h4>
+            <p>
+              Explore our collection of high-quality images. Each photo is
+              carefully selected to provide visual appeal and inspiration for
+              your projects.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup 3 - YouTube Video -->
+    <div class="modal fade" id="popup3" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fab fa-youtube me-2"></i>YouTube Content
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <iframe
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+            <h4>Featured YouTube Video</h4>
+            <p>
+              Watch our featured YouTube content directly in this popup. This
+              embedded player provides full YouTube functionality within our
+              website interface.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup 4 - Another Image -->
+    <div class="modal fade" id="popup4" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-camera me-2"></i>Image Showcase
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <img
+              src="https://picsum.photos/600/300?random=2"
+              alt="Creative Design"
+              class="w-100"
+            />
+            <h4>Creative Showcase</h4>
+            <p>
+              Discover creative designs and artistic expressions through our
+              curated image collection. Perfect for inspiration and visual
+              storytelling.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup 5 - Another Video -->
+    <div class="modal fade" id="popup5" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-film me-2"></i>Video Content
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <video controls class="w-100">
+              <source
+                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+            <h4>Premium Video Experience</h4>
+            <p>
+              Enjoy our premium video content with crystal clear quality and
+              smooth playback. Our video player is optimized for all devices and
+              screen sizes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <h5>About Us</h5>
+            <p>
+              We create amazing digital experiences with cutting-edge technology
+              and beautiful design. Our mission is to deliver exceptional user
+              experiences.
+            </p>
+          </div>
+          <div class="col-md-4 mb-4">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="#service">Service</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-4">
+            <h5>Follow Us</h5>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+        <hr style="border-color: rgba(255, 255, 255, 0.1)" />
+        <div class="text-center">
+          <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Loader functionality
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          const loader = document.getElementById("loader");
+          loader.style.opacity = "0";
+          setTimeout(function () {
+            loader.style.display = "none";
+          }, 500);
+        }, 2000); // 2 second delay
+      });
+
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Navbar background change on scroll
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+          navbar.style.background = "rgba(255, 255, 255, 0.98)";
+        } else {
+          navbar.style.background = "rgba(255, 255, 255, 0.95)";
+        }
+      });
+
+      // Add hover effects to buttons
+      document.querySelectorAll(".popup-btn").forEach((btn) => {
+        btn.addEventListener("mouseenter", function () {
+          this.style.transform = "translateY(-10px) scale(1.05)";
+        });
+
+        btn.addEventListener("mouseleave", function () {
+          this.style.transform = "translateY(0) scale(1)";
+        });
+      });
+
+      // Modal event listeners
+      document.querySelectorAll(".modal").forEach((modal) => {
+        modal.addEventListener("shown.bs.modal", function () {
+          // Pause any videos when modal opens
+          const videos = this.querySelectorAll("video");
+          videos.forEach((video) => {
+            video.currentTime = 0;
+          });
+        });
+
+        modal.addEventListener("hidden.bs.modal", function () {
+          // Pause any videos when modal closes
+          const videos = this.querySelectorAll("video");
+          videos.forEach((video) => {
+            video.pause();
+          });
+        });
+      });
+
+      // Add some interactive animations
+      function addParticleEffect(element) {
+        const particle = document.createElement("div");
+        particle.style.position = "absolute";
+        particle.style.width = "4px";
+        particle.style.height = "4px";
+        particle.style.background = "#fff";
+        particle.style.borderRadius = "50%";
+        particle.style.pointerEvents = "none";
+        particle.style.zIndex = "1000";
+
+        const rect = element.getBoundingClientRect();
+        particle.style.left = rect.left + Math.random() * rect.width + "px";
+        particle.style.top = rect.top + Math.random() * rect.height + "px";
+
+        document.body.appendChild(particle);
+
+        particle.animate(
+          [
+            { transform: "translateY(0px)", opacity: 1 },
+            { transform: "translateY(-50px)", opacity: 0 },
+          ],
+          {
+            duration: 1000,
+            easing: "ease-out",
+          }
+        ).onfinish = () => particle.remove();
+      }
+
+      // Add particle effect on button hover
+      document.querySelectorAll(".popup-btn").forEach((btn) => {
+        btn.addEventListener("mouseenter", function () {
+          for (let i = 0; i < 5; i++) {
+            setTimeout(() => addParticleEffect(this), i * 100);
+          }
+        });
+      });
+
+      console.log(
+        "🎉 Website loaded successfully! All animations and interactions are ready."
+      );
+    </script>
+  </body>
+</html>
